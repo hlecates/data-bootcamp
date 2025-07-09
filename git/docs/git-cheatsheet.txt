@@ -1,0 +1,99 @@
+GIT CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. Installation & Setup
+2. Reop Setup & Init
+3. Staging Commits
+4. Branch & Merge
+5. Sharing & Updating
+
+==========================================
+1. INSTALLATION & SETUP
+==========================================
+
+Git VS Github:
+    - Git is a distributed version control system. Allowing managers of projects to track changes 
+    to the codebase, revert back to previous versions, compare previous versions, and collaborate
+    on the saem codebase without overwriting changes. 
+
+    - Github (https://github.com) is a web based platform that uses Git for version control and 
+    collaboration. Allows people to store and manage their code.
+
+Setup (configuring user information):
+
+$ git config --global user.name "{NAME}"
+    - Sets a name that is an ID for version history
+
+$ git config --global user.email "{EMAIL}"
+    - Similarily sets an asscoiated email
+
+
+==========================================
+2. REPO SETUP & INIT
+==========================================
+
+$ git init
+    - Intialize an existing directory, as a Git repository. A repo is the virtual stroage location
+    where the version control and project is stored. 
+
+& git clone [url]
+    - Retrieves an entire existing repo from a URL (a github repo link)
+
+
+==========================================
+3. STAGING COMMITS
+==========================================
+
+A commit is a "snapshot" of your project at the current time. It captures the current image of 
+all the files that have been added.
+
+$ git status
+    - Shows the modified files in the working directory, which are staged for the next commit.
+
+$ git add [FILENAME]
+    - Add the file as it is to your next commit. [FILENAME] can be replaced with a . to add all edited files.
+
+$ git reset [FILENAME]
+    - Unstages a file from the commit, while maintaining the changes made in working directory. 
+
+$ git commit -m "[COMMIT MESSAGE]"
+    - Commits the statged snapshot as a new commit. The commit message should be a descriptive description of
+    the commit. A common message style is the conventional commit: "type(scope): short description"
+
+
+==========================================
+4. BRANCH & MERGE
+==========================================
+
+A branch is essentially an independent line of development/commits/workplace, where any changes to the codebase
+do not effect the main (or master) branch. To merge branches means to integrate the changes from one 
+branch into another. 
+
+$ git branch
+    - Will list all the branches of the repository. A * will appear next to the currently active branch
+
+$ git branch [BRANCH_NAME]
+    - Creates a new branch at the current commit
+
+$ git merge [BRANCH]
+    - Merge the specified branch's commit/change history into the current branch
+
+
+==========================================
+5. SHARING & UPDATING
+==========================================
+
+$ git push [alias] [branch]
+    - Transmits the local branch's commits to the remote repo
+
+$ git pull 
+    - Fetch and merges any commits from the remote branch
+
+Forking:
+    - A fork is your own personal copy of someone else’s repository, stored under your GitHub account.  
+    You use it when you want to contribute changes to a project you don’t have direct write access to,  
+    or when you’d like to experiment independently without affecting the original codebase.
+    - To fork a repository: click "Fork" on a target repo in Github, then clone the repository via the CLI
+
+

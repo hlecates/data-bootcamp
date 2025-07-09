@@ -34,10 +34,10 @@ $ git config --global user.email "{EMAIL}"
 ==========================================
 
 $ git init
-    - Intialize an existing directory, as a Git repository. A repo is the virtual stroage location
+    - Intialize the current directory, as a Git repository. A repo is the virtual stroage location
     where the version control and project is stored. 
 
-& git clone [url]
+& git clone <url>
     - Retrieves an entire existing repo from a URL (a github repo link)
 
 
@@ -52,7 +52,7 @@ $ git status
     - Shows the modified files in the working directory, which are staged for the next commit.
 
 $ git add [FILENAME]
-    - Add the file as it is to your next commit. [FILENAME] can be replaced with a . to add all edited files.
+    - Stage changes in <file> (or add <file> to the commit in) (use `.` to stage all changes).
 
 $ git reset [FILENAME]
     - Unstages a file from the commit, while maintaining the changes made in working directory. 
@@ -75,6 +75,9 @@ $ git branch
 
 $ git branch [BRANCH_NAME]
     - Creates a new branch at the current commit
+
+$ git checkout [BRANCH_NAME]
+    - Switch to the specified branch
 
 $ git merge [BRANCH]
     - Merge the specified branch's commit/change history into the current branch

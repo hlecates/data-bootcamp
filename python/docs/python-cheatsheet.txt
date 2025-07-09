@@ -1,0 +1,536 @@
+PYTHON CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. Variables & Data Types
+2. Basic Operations
+3. Data Structures
+4. Coditionals & Loops
+5. Functions
+6. Classes & Object-Oriented Programming
+7. File Handling
+8. Error Handling
+9. List Comprehensions
+1. Lambda Functions
+11. Modules & Packages
+
+==========================================
+1. VARIABLES & DATA TYPES
+==========================================
+
+Basic Data Types:
+
+INTEGER (int)
+- Whole numbers (positive, negative, or zero)
+- No decimal points
+- Examples: 5, -10, 0, 1000000
+
+FLOAT (float)
+- Numbers with decimal points
+- Used for precise calculations
+- Examples: 3.14, -2.5, 0.0, 1.0
+
+STRING (str)
+- Text enclosed in quotes (single or double)
+- Can contain letters, numbers, symbols
+- Examples: "Hello", 'Python', "123", "Data Science"
+
+BOOLEAN (bool)
+- True or False values
+- Used for logical operations
+- Examples: True, False
+
+NONE (NoneType) (aka Null)
+- Represents "nothing" or "empty"
+- Used when a variable has no value
+- Example: None
+
+Variable Assignment:
+variable_name = value
+
+Type Checking:
+type(variable_name)        # Returns the data type
+isinstance(variable, type) # Checks if variable is of specific type
+
+==========================================
+2. BASIC OPERATIONS
+==========================================
+
+ARITHMETIC OPERATORS:
++   Addition: 5 + 3 = 8
+-   Subtraction: 10 - 4 = 6
+*   Multiplication: 6 * 7 = 42
+/   Division: 15 / 3 = 5.0 (always returns float)
+//  Floor Division: 15 // 3 = 5 (returns integer)
+%   Modulo (remainder): 17 % 5 = 2
+**  Exponentiation: 2 ** 3 = 8
+
+COMPARISON OPERATORS:
+==  Equal to: 5 == 5 (True)
+!=  Not equal to: 5 != 3 (True)
+<   Less than: 3 < 7 (True)
+>   Greater than: 10 > 5 (True)
+<=  Less than or equal: 5 <= 5 (True)
+>=  Greater than or equal: 8 >= 6 (True)
+
+LOGICAL OPERATORS:
+and - Both conditions must be True
+or  - At least one condition must be True
+not - Reverses True/False
+
+
+==========================================
+3. DATA STRUCTURES
+==========================================
+
+LISTS (list):
+- Ordered collection of items
+- Mutable (can be changed)
+- Can contain different data types
+- Indexed starting from 0
+
+Syntax: [item1, item2, item3]
+
+Examples:
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "hello", 3.14, True]
+empty_list = []
+
+List Operations:
+- Accessing: list[index]
+- Slicing: list[start:end:step]
+- Adding: list.append(item), list.insert(index, item)
+- Removing: list.remove(item), list.pop(index)
+- Length: len(list)
+
+TUPLES (tuple):
+- Ordered collection like lists
+- IMMUTABLE (cannot be changed after creation)
+- Faster than lists
+- Used for data that shouldn't change
+
+Syntax: (item1, item2, item3)
+
+Examples:
+coordinates = (10, 20)
+
+DICTIONARIES (dict):
+- Key-value pairs
+- Unordered (in older Python versions)
+- Mutable
+- Like a real dictionary: word (key) → definition (value)
+
+Syntax: {key1: value1, key2: value2}
+
+Examples:
+person = {
+    "name": "Alice",
+    "age": 25,
+    "city": "New York"
+}
+
+Dictionary Operations:
+- Accessing: dict[key]
+- Adding/Updating: dict[key] = value
+- Removing: del dict[key]
+- Keys: dict.keys()
+- Values: dict.values()
+- Items: dict.items()
+
+SETS (set):
+- Unordered collection of unique items
+- Mutable
+- No duplicates allowed
+- Fast membership testing
+
+Syntax: {item1, item2, item3}
+
+Examples:
+unique_numbers = {1, 2, 3, 4, 5}
+fruits = {"apple", "banana", "orange"}
+
+Set Operations:
+- Union: set1 | set2 or set1.union(set2)
+- Intersection: set1 & set2 or set1.intersection(set2)
+- Difference: set1 - set2 or set1.difference(set2)
+
+==========================================
+4. CONDITIONALS & LOOPS
+==========================================
+
+Control flow determines the order in which code executes.
+
+IF STATEMENTS:
+if condition:
+    # code to run if condition is True
+elif another_condition:
+    # code to run if another_condition is True
+else:
+    # code to run if no conditions are True
+
+Example:
+age = 18
+if age >= 18:
+    print("Adult")
+elif age >= 13:
+    print("Teenager")
+else:
+    print("Child")
+
+LOOPS:
+
+FOR LOOP:
+- Iterates over a sequence (list, tuple, string, etc.)
+- Executes code for each item
+
+Syntax:
+for item in sequence:
+    # code to run for each item
+
+Examples:
+# Loop through list
+numbers = [1, 2, 3, 4, 5]
+for num in numbers:
+    print(num * 2)
+
+# Loop through range
+for i in range(5):  # 0, 1, 2, 3, 4
+    print(i)
+
+# Loop through string
+for char in "Python":
+    print(char)
+
+WHILE LOOP:
+- Repeats code while condition is True
+- Must have a way to end the loop
+
+Syntax:
+while condition:
+    # code to run while condition is True
+
+Example:
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+
+LOOP CONTROL:
+break    - Exit the loop immediately
+continue - Skip to next iteration
+pass     - Do nothing (placeholder)
+
+==========================================
+5. FUNCTIONS
+==========================================
+
+Functions are reusable blocks of code that perform specific tasks.
+
+BASIC FUNCTION:
+def function_name(parameters):
+    # function body
+    return value
+
+Example:
+def greet(name):
+    return f"Hello, {name}!"
+
+# Calling the function
+message = greet("Alice")
+print(message)  # Output: Hello, Alice!
+
+PARAMETERS AND ARGUMENTS:
+- Parameters: Variables in function definition
+- Arguments: Values passed to function
+
+Types of Parameters:
+
+1. Positional Arguments:
+def add(a, b):
+    return a + b
+
+result = add(5, 3)  # a=5, b=3
+
+2. Keyword Arguments:
+def greet(name, age):
+    return f"Hello {name}, you are {age} years old"
+
+result = greet(age=25, name="Alice")
+
+3. Default Parameters:
+def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+result = greet("Alice")  # Uses default greeting
+result2 = greet("Bob", "Hi")  # Uses custom greeting
+
+4. Variable Arguments (*args):
+def sum_all(*numbers):
+    return sum(numbers)
+
+result = sum_all(1, 2, 3, 4, 5)
+
+5. Keyword Arguments (**kwargs):
+def person_info(**info):
+    for key, value in info.items():
+        print(f"{key}: {value}")
+
+person_info(name="Alice", age=25, city="NYC")
+
+RETURN VALUES:
+- Functions can return values using 'return'
+- If no return statement, function returns None
+- Can return multiple values as a tuple
+
+Example:
+def get_name_and_age():
+    return "Alice", 25
+
+name, age = get_name_and_age()
+
+SCOPE:
+- Local variables: Defined inside function
+- Global variables: Defined outside function
+- Use 'global' keyword to modify global variables inside function
+
+==========================================
+6. CLASSES AND OBJECT-ORIENTED PROGRAMMING
+==========================================
+
+Classes are blueprints for creating objects. Objects are instances of classes.
+
+BASIC CLASS:
+class ClassName:
+    def __init__(self, parameters):
+        # Constructor - runs when object is created
+        self.attribute = value
+    
+    def method_name(self, parameters):
+        # Method - function that belongs to class
+        return result
+
+Example:
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def greet(self):
+        return f"Hello, I'm {self.name} and I'm {self.age} years old"
+    
+    def have_birthday(self):
+        self.age += 1
+        return f"Happy birthday! I'm now {self.age} years old"
+
+# Creating objects (instances)
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 30)
+
+# Using methods
+print(person1.greet())
+person1.have_birthday()
+
+INHERITANCE:
+- Child class inherits from parent class
+- Reuses code and extends functionality
+
+Example:
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return "Some sound"
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+
+print(dog.speak())  # Woof!
+print(cat.speak())  # Meow!
+
+ENCAPSULATION:
+- Bundling data and methods that work on that data
+- Use underscore prefix for "private" attributes
+
+Example:
+class BankAccount:
+    def __init__(self, balance):
+        self._balance = balance  # "Private" attribute
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self._balance += amount
+            return True
+        return False
+    
+    def get_balance(self):
+        return self._balance
+
+POLYMORPHISM:
+- Same interface, different implementations
+- Methods with same name work differently
+
+Example:
+def animal_sound(animal):
+    return animal.speak()
+
+# Works with any animal type
+print(animal_sound(dog))  # Woof!
+print(animal_sound(cat))  # Meow!
+
+==========================================
+7. FILE HANDLING
+==========================================
+
+Reading and writing files is essential for data science.
+
+READING FILES:
+# Read entire file
+with open('filename.txt', 'r') as file:
+    content = file.read()
+
+# Read line by line
+with open('filename.txt', 'r') as file:
+    for line in file:
+        print(line.strip())
+
+# Read all lines into list
+with open('filename.txt', 'r') as file:
+    lines = file.readlines()
+
+WRITING FILES:
+# Write text to file
+with open('output.txt', 'w') as file:
+    file.write("Hello, World!")
+
+# Append to file
+with open('output.txt', 'a') as file:
+    file.write("\nNew line")
+
+FILE MODES:
+'r'  - Read (default)
+'w'  - Write (overwrites)
+'a'  - Append
+'x'  - Exclusive creation
+'b'  - Binary mode
+'t'  - Text mode (default)
+
+CSV FILES:
+import csv
+
+# Reading CSV
+with open('data.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+
+# Writing CSV
+with open('output.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Name', 'Age', 'City'])
+    writer.writerow(['Alice', 25, 'NYC'])
+
+==========================================
+8. ERROR HANDLING
+==========================================
+
+Error handling prevents programs from crashing when errors occur.
+
+TRY-EXCEPT BLOCK:
+try:
+    # Code that might cause an error
+    result = 10 / 0
+except ZeroDivisionError:
+    # Code to handle the specific error
+    print("Cannot divide by zero!")
+except Exception as e:
+    # Code to handle any other error
+    print(f"An error occurred: {e}")
+else:
+    # Code that runs if no error occurred
+    print("No errors!")
+finally:
+    # Code that always runs
+    print("Cleanup code")
+
+COMMON EXCEPTIONS:
+ValueError        - Invalid value
+TypeError         - Wrong data type
+IndexError        - Invalid list index
+KeyError          - Invalid dictionary key
+FileNotFoundError - File doesn't exist
+ImportError       - Module not found
+
+RAISING EXCEPTIONS:
+def divide(a, b):
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
+
+CUSTOM EXCEPTIONS:
+class CustomError(Exception):
+    pass
+
+==========================================
+9. LIST COMPREHENSIONS
+==========================================
+
+List comprehensions are concise ways to create lists.
+
+BASIC SYNTAX:
+[expression for item in iterable]
+
+Examples:
+# Traditional way
+squares = []
+for i in range(5):
+    squares.append(i ** 2)
+
+# List comprehension
+squares = [i ** 2 for i in range(5)]
+
+# With condition
+even_squares = [i ** 2 for i in range(10) if i % 2 == 0]
+
+# Nested comprehension
+matrix = [[i + j for j in range(3)] for i in range(3)]
+
+ADVANCED EXAMPLES:
+# Filter and transform
+names = ["Alice", "Bob", "Charlie", "David"]
+long_names = [name.upper() for name in names if len(name) > 4]
+
+# Dictionary comprehension
+squares_dict = {x: x**2 for x in range(5)}
+
+# Set comprehension
+unique_lengths = {len(name) for name in names}
+
+==========================================
+10. MODULES & PACKAGES
+==========================================
+
+Modules are Python files that can be imported and used in other files.
+
+IMPORTING MODULES:
+import module_name
+from module_name import function_name
+from module_name import *
+import module_name as alias
+
+Examples:
+import math
+print(math.pi)
+
+from math import sqrt
+print(sqrt(16))
+
+import pandas as pd

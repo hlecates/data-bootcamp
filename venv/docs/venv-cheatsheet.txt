@@ -1,0 +1,133 @@
+VENV (VIRTUAL ENVIRONMENT) CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. What is a Virtual Environment?
+2. Why Use Virtual Environments?
+3. Creating Virtual Environments
+4. Activating Virtual Environments
+5. Deactivating Virtual Environments
+6. Managing Dependencies
+
+==========================================
+1. WHAT IS A VIRTUAL ENVIRONMENT?
+==========================================
+
+A virtual environment (venv) is an isolated Python environment that allows you to:
+    - Install packages and dependencies specific to a project
+    - Avoid conflicts between different projects' requirements
+    - Keep your system Python installation clean
+    - Ensure reproducible environments across different machines
+
+Think of it as a "container" for your Python project with its own:
+    - Python interpreter
+    - pip (package installer)
+    - Installed packages
+    - Environment variables
+
+==========================================
+2. WHY USE VIRTUAL ENVIRONMENTS?
+==========================================
+
+Benefits:
+    - Project Isolation: Each project has its own dependencies
+    - Version Control: Different projects can use different versions of the same package
+    - Clean System: Prevents cluttering your global Python installation
+    - Reproducibility: Easy to recreate the exact same environment
+    - Collaboration: Others can recreate your environment exactly
+
+Example Problem Without venv:
+    - Project A needs Django 3.2
+    - Project B needs Django 4.2
+    - Installing both globally causes conflicts
+    - Solution: Use separate virtual environments
+
+==========================================
+3. CREATING VIRTUAL ENVIRONMENTS
+==========================================
+
+$ python -m venv [ENVIRONMENT_NAME]
+    - Creates a new virtual environment in a directory named [ENVIRONMENT_NAME]
+    - Common names: venv, env, .venv, project_env
+
+Examples:
+$ python -m venv venv
+    - Creates a virtual environment in a folder called "venv"
+
+$ python -m venv .venv
+    - Creates a virtual environment in a hidden folder called ".venv"
+
+$ python -m venv myproject_env
+    - Creates a virtual environment in a folder called "myproject_env"
+
+==========================================
+4. ACTIVATING VIRTUAL ENVIRONMENTS
+==========================================
+
+You must activate a virtual environment before using it. The activation process:
+    - Changes your shell's PATH to use the venv's Python
+    - Updates the command prompt to show the active environment
+    - Makes pip install packages into the venv instead of globally
+
+macOS/Linux:
+$ source [ENVIRONMENT_NAME]/bin/activate
+    - Activates the virtual environment
+
+Windows:
+$ [ENVIRONMENT_NAME]\Scripts\activate
+    - Activates the virtual environment
+
+Examples:
+$ source venv/bin/activate
+    - Activates a venv in the "venv" folder
+
+$ source .venv/bin/activate
+    - Activates a venv in the ".venv" folder
+
+After activation, you'll see the environment name in your prompt:
+(venv) username@computer:~/project$
+
+==========================================
+5. DEACTIVATING VIRTUAL ENVIRONMENTS
+==========================================
+
+$ deactivate
+    - Deactivates the current virtual environment
+    - Returns to your system's global Python environment
+    - Removes the environment name from your prompt
+
+==========================================
+6. MANAGING DEPENDENCIES
+==========================================
+
+With an active virtual environment:
+
+$ pip install [PACKAGE_NAME]
+    - Installs a package into the current virtual environment
+
+$ pip install -r requirements.txt
+    - Installs all packages listed in requirements.txt
+
+$ pip freeze > requirements.txt
+    - Saves all installed packages to requirements.txt
+
+$ pip list
+    - Shows all packages installed in the current environment
+
+$ pip uninstall [PACKAGE_NAME]
+    - Removes a package from the current environment
+
+Best Practices:
+    - Always activate your venv before installing packages
+    - Use requirements.txt to track dependencies
+    - Include venv folder in .gitignore
+    - Use descriptive environment names
+    - One venv per project
+
+Common Workflow:
+1. Create project directory
+2. Create virtual environment: python -m venv venv
+3. Activate environment: source venv/bin/activate
+4. Install packages: pip install package_name
+5. Save dependencies: pip freeze > requirements.txt
+6. Deactivate when done: deactivate 

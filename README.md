@@ -17,6 +17,9 @@ Machine learning is a subset of data science focused on algorithms that learn pa
 * `git/`
   Contains a cheatsheet covering Git commands and best practices.
 
+* `venv/`
+  Provides a cheatsheet on Python virtual environments, explaining what they are, why to use them, and how to create, activate, and deactivate them.
+
 * `python/`
   Includes a Python fundamentals cheatsheet and examples of core language features (variables, loops, functions, modules).
 

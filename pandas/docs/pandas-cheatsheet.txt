@@ -1,0 +1,260 @@
+PANDAS CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. Installation & Import
+2. Data Structures
+3. Data I/O
+4. Selection & Filtering
+5. Data Cleaning
+6. Transformation & Aggregation
+7. Grouping & Pivot
+8. Merging & Joining
+
+
+==========================================
+1. INSTALLATION & IMPORT
+==========================================
+
+$ pip install pandas
+    - Installs pandas library via pip package manager
+
+import pandas as pd
+    - Standard convention for importing pandas
+    - 'pd' is the universally accepted alias for pandas
+
+
+==========================================
+2. DATA STRUCTURES
+==========================================
+
+Series: 1D labeled array
+    - One-dimensional array with axis labels (index)
+    - Can hold any data type (integers, strings, floats, etc.)
+    - Similar to a column in a spreadsheet or a list with labels
+
+s = pd.Series([1, 3, 5, None, 6])
+    - Creates a Series from a list
+    - None represents missing values (NaN)
+    - Automatically creates numeric index (0, 1, 2, 3, 4)
+
+DataFrame: 2D table of Series
+    - Two-dimensional labeled data structure (rows and columns)
+    - Each column is a Series
+    - Think of it as a spreadsheet or database table
+
+df = pd.DataFrame({
+    'A': [1, 2, 3],
+    'B': ['x', 'y', 'z']
+})
+    - Creates a DataFrame from a dictionary
+    - Keys become column names, values become column data
+    - Automatically aligns data by index
+
+
+==========================================
+3. DATA I/O
+==========================================
+
+CSV Files:
+df = pd.read_csv('data.csv')
+    - Reads a CSV file into a DataFrame
+    - Automatically detects data types and handles missing values
+    - Most common format for data exchange
+
+df.to_csv('out.csv', index=False)
+    - Saves DataFrame to CSV file
+    - index=False prevents writing row numbers to file
+
+Excel Files:
+df = pd.read_excel('data.xlsx', sheet_name='Sheet1')
+    - Reads an Excel file into a DataFrame
+    - Can specify which sheet to read from multi-sheet files
+    - Requires openpyxl or xlrd library
+
+df.to_excel('out.xlsx', sheet_name='Sheet1')
+    - Saves DataFrame to Excel file
+    - Can specify sheet name for output
+
+JSON Files:
+df = pd.read_json('data.json')
+    - Reads a JSON file into a DataFrame
+    - Handles nested JSON structures
+    - Good for API responses and web data
+
+df.to_json('out.json')
+    - Saves DataFrame to JSON file
+    - Useful for web applications and APIs
+
+SQL Database:
+import sqlite3
+conn = sqlite3.connect('db.sqlite')
+df = pd.read_sql('SELECT * FROM table', conn)
+    - Reads data from SQL database using SQL query
+    - Works with any database (MySQL, PostgreSQL, SQLite, etc.)
+    - Returns results as DataFrame
+
+df.to_sql('table', conn, if_exists='replace')
+    - Saves DataFrame to SQL database table
+    - if_exists='replace' overwrites existing table
+    - Other options: 'fail', 'append'
+
+
+==========================================
+4. SELECTION & FILTERING
+==========================================
+
+Column Selection:
+df['col']
+    - Selects a single column (returns Series)
+    - Use square brackets with column name as string
+
+df[['A','B']]
+    - Selects multiple columns (returns DataFrame)
+    - Use list of column names in square brackets
+
+Row Selection:
+
+LOC vs ILOC:
+    - loc: Label-based indexing (uses actual index values)
+    - iloc: Integer-based indexing (uses position numbers)
+
+df.loc[2]
+    - Selects row by label/index
+    - Uses the actual index labels of the DataFrame
+    - If index is [10, 20, 30], loc[2] would fail (no label '2')
+    - If index is [0, 1, 2], loc[2] selects row with label '2'
+
+df.iloc[0]
+    - Selects row by integer position
+    - Uses 0-based integer indexing (like Python lists)
+    - Always selects the first row (position 0), regardless of index labels
+    - Works even if index labels are strings or non-sequential
+
+Examples:
+    df = pd.DataFrame({'A': [1, 2, 3]}, index=['a', 'b', 'c'])
+    df.loc['b']     # Selects row with label 'b' (value: 2)
+    df.iloc[1]      # Selects row at position 1 (value: 2)
+    
+    df.loc['a':'c'] # Slices by labels (inclusive)
+    df.iloc[0:2]    # Slices by position (exclusive end)
+
+    # Mixed indexing (loc for rows, iloc for columns)
+    df.loc['a', df.iloc[:, 0]]  # Row 'a', first column
+    
+    # Boolean indexing with loc
+    df.loc[df['A'] > 1]  # Rows where A > 1
+    
+    # Setting values
+    df.loc['a', 'A'] = 10  # Set specific cell value
+    
+    # Common patterns:
+    df.loc[:, 'A']     # All rows, column 'A'
+    df.iloc[:, 0]      # All rows, first column
+    df.loc['a', :]     # Row 'a', all columns
+    df.iloc[0, :]      # First row, all columns
+
+
+==========================================
+5. DATA CLEANING
+==========================================
+
+Missing Values:
+df.isna()
+    - Returns boolean mask of missing values
+    - A mask is a True/False array where True indicates missing values
+    - Can be used for filtering: df[df.isna()] shows only rows with missing values
+
+df.dropna()
+    - Removes rows with any missing values
+    - Uses the boolean mask internally to identify rows to drop
+
+df.fillna(0)
+    - Replaces missing values with 0
+    - Can also use: df.fillna(method='ffill') to forward-fill
+
+Duplicates:
+df.duplicated()
+    - Returns boolean mask of duplicate rows
+    - True indicates rows that are duplicates of earlier rows
+    - Useful for identifying which rows are duplicates before removing them
+
+df.drop_duplicates()
+    - Removes duplicate rows
+    - Keeps first occurrence, removes subsequent duplicates
+    - Can specify columns: df.drop_duplicates(subset=['col1', 'col2'])
+
+Renaming:
+df.rename(columns={'old':'new'}, inplace=True)
+    - Renames columns
+
+Replacing Values:
+df.replace({'A':{0:np.nan}})
+    - Replaces specific values
+
+Type Conversion:
+df['A'] = df['A'].astype(float)
+    - Converts column to float type
+
+
+==========================================
+6. TRANSFORMATION & AGGREGATION
+==========================================
+
+Apply Functions:
+df['A'].apply(lambda x: x*2)
+    - Applies function to each element in column
+
+df.applymap(str)
+    - Applies function to each element in DataFrame
+
+Descriptive Statistics:
+$ df.describe()
+    - Provides summary statistics
+
+df.mean(), df.median(), df.std()
+    - Calculates mean, median, standard deviation
+
+Value Counts:
+df['col'].value_counts()
+    - Counts unique values in a column
+
+
+==========================================
+7. GROUPING & PIVOT
+==========================================
+
+GroupBy:
+df.groupby('group_col').sum()
+    - Groups by column and calculates sum
+
+df.groupby(['A','B'])['C'].mean()
+    - Groups by multiple columns and calculates mean
+
+Aggregation:
+df.groupby('A').agg({'B':'sum','C':'mean'})
+    - Applies different functions to different columns
+
+Pivot Table:
+pd.pivot_table(df, index='A', columns='B', values='C', aggfunc='mean')
+    - Creates pivot table with specified aggregation
+
+
+==========================================
+8. MERGING & JOINING
+==========================================
+
+Merge (SQL-style):
+pd.merge(df1, df2, on='key', how='inner')
+    - Merges DataFrames on common column
+
+Join (index-on-index):
+df1.join(df2, how='left')
+    - Joins DataFrames on index
+
+Concatenate:
+pd.concat([df1, df2], axis=0)
+    - Combines DataFrames by adding rows
+
+pd.concat([df1, df2], axis=1)
+    - Combines DataFrames by adding columns

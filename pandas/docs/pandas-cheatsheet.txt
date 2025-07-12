@@ -8,8 +8,7 @@ TABLE OF CONTENTS
 4. Selection & Filtering
 5. Data Cleaning
 6. Transformation & Aggregation
-7. Grouping & Pivot
-8. Merging & Joining
+7. Merging & Joining
 
 
 ==========================================
@@ -221,32 +220,8 @@ df['col'].value_counts()
 
 
 ==========================================
-7. GROUPING & PIVOT
+7. JOINING
 ==========================================
-
-GroupBy:
-df.groupby('group_col').sum()
-    - Groups by column and calculates sum
-
-df.groupby(['A','B'])['C'].mean()
-    - Groups by multiple columns and calculates mean
-
-Aggregation:
-df.groupby('A').agg({'B':'sum','C':'mean'})
-    - Applies different functions to different columns
-
-Pivot Table:
-pd.pivot_table(df, index='A', columns='B', values='C', aggfunc='mean')
-    - Creates pivot table with specified aggregation
-
-
-==========================================
-8. MERGING & JOINING
-==========================================
-
-Merge (SQL-style):
-pd.merge(df1, df2, on='key', how='inner')
-    - Merges DataFrames on common column
 
 Join (index-on-index):
 df1.join(df2, how='left')

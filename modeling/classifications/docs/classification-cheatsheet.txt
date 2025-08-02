@@ -1,0 +1,355 @@
+CLASSIFICATION CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. Installation & Import
+2. Data Preparation
+3. Train-Test Split
+4. Logistic Regression
+5. Decision Trees
+6. Random Forest
+7. Support Vector Machines
+8. K-Nearest Neighbors
+9. Naive Bayes
+10. Model Evaluation
+11. Cross-Validation
+12. Hyperparameter Tuning
+
+==========================================
+1. INSTALLATION & IMPORT
+==========================================
+
+$ pip install scikit-learn pandas numpy matplotlib seaborn
+    - Installs essential libraries for classification
+
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+    - Standard imports for classification algorithms and evaluation
+
+
+==========================================
+2. DATA PREPARATION
+==========================================
+
+LOADING DATA:
+import pandas as pd
+df = pd.read_csv('data.csv')
+    - Load dataset from CSV file
+
+EXPLORING DATA:
+df.head()
+    - View first 5 rows
+
+df.info()
+    - Data types and missing values
+
+df.describe()
+    - Statistical summary
+
+df['target'].value_counts()
+    - Count of each class
+
+HANDLING MISSING VALUES:
+df.dropna()
+    - Remove rows with missing values
+
+df.fillna(value)
+    - Fill missing values with specific value
+
+df.fillna(df.mean())
+    - Fill missing values with mean
+
+FEATURE ENGINEERING:
+df['new_feature'] = df['col1'] + df['col2']
+    - Create new features
+
+df['category_encoded'] = pd.get_dummies(df['category'])
+    - One-hot encoding for categorical variables
+
+FEATURE SCALING:
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+    - Standardize features (mean=0, std=1)
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+    - Normalize features to [0,1] range
+
+
+==========================================
+3. TRAIN-TEST SPLIT
+==========================================
+
+BASIC SPLIT:
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    - Split data into training (80%) and test (20%) sets
+    - random_state ensures reproducible results
+
+STRATIFIED SPLIT:
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+    - Maintains class distribution in both sets
+    - Important for imbalanced datasets
+
+
+==========================================
+4. LOGISTIC REGRESSION
+==========================================
+
+BASIC LOGISTIC REGRESSION:
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Linear classification algorithm
+    - Good baseline model
+    - Provides probability estimates
+
+HYPERPARAMETERS:
+model = LogisticRegression(C=1.0, penalty='l2', solver='lbfgs', random_state=42)
+    - C: inverse of regularization strength (smaller = stronger regularization)
+    - penalty: 'l1' (Lasso) or 'l2' (Ridge)
+    - solver: 'lbfgs', 'liblinear', 'saga'
+
+PROBABILITY PREDICTIONS:
+y_proba = model.predict_proba(X_test)
+    - Returns probability for each class
+
+COEFFICIENTS:
+model.coef_
+    - Feature importance (coefficients)
+    - Positive: increases probability of positive class
+    - Negative: decreases probability of positive class
+
+
+==========================================
+5. DECISION TREES
+==========================================
+
+BASIC DECISION TREE:
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Non-linear classification
+    - Easy to interpret
+    - Can overfit easily
+
+HYPERPARAMETERS:
+model = DecisionTreeClassifier(max_depth=5, min_samples_split=2, min_samples_leaf=1, random_state=42)
+    - max_depth: maximum tree depth (prevents overfitting)
+    - min_samples_split: minimum samples to split node
+    - min_samples_leaf: minimum samples in leaf node
+
+FEATURE IMPORTANCE:
+model.feature_importances_
+    - Importance of each feature
+    - Sum to 1.0
+
+VISUALIZATION:
+from sklearn.tree import plot_tree
+plot_tree(model, feature_names=feature_names, class_names=class_names)
+    - Visualize decision tree structure
+
+
+==========================================
+6. RANDOM FOREST
+==========================================
+
+BASIC RANDOM FOREST:
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Ensemble of decision trees
+    - Reduces overfitting
+    - Provides feature importance
+
+HYPERPARAMETERS:
+model = RandomForestClassifier(n_estimators=100, max_depth=10, min_samples_split=2, random_state=42)
+    - n_estimators: number of trees
+    - max_depth: maximum depth of each tree
+    - min_samples_split: minimum samples to split
+
+FEATURE IMPORTANCE:
+importances = model.feature_importances_
+    - Average feature importance across all trees
+
+INDICES = np.argsort(importances)[::-1]
+for f in range(X.shape[1]):
+    print("%d. %s (%f)" % (f + 1, feature_names[INDICES[f]], importances[INDICES[f]]))
+    - Print feature importance ranking
+
+
+==========================================
+7. SUPPORT VECTOR MACHINES
+==========================================
+
+BASIC SVM:
+from sklearn.svm import SVC
+model = SVC(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Finds optimal hyperplane to separate classes
+    - Good for high-dimensional data
+    - Can be slow for large datasets
+
+HYPERPARAMETERS:
+model = SVC(C=1.0, kernel='rbf', gamma='scale', random_state=42)
+    - C: regularization parameter
+    - kernel: 'linear', 'rbf', 'poly', 'sigmoid'
+    - gamma: kernel coefficient
+
+LINEAR SVM:
+from sklearn.svm import LinearSVC
+model = LinearSVC(random_state=42)
+    - Faster for linear classification
+    - No kernel trick
+
+
+==========================================
+8. K-NEAREST NEIGHBORS
+==========================================
+
+BASIC KNN:
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Non-parametric method
+    - Based on similarity to training examples
+    - Requires feature scaling
+
+HYPERPARAMETERS:
+model = KNeighborsClassifier(n_neighbors=5, weights='uniform', metric='minkowski')
+    - n_neighbors: number of neighbors to consider
+    - weights: 'uniform' or 'distance'
+    - metric: distance metric ('euclidean', 'manhattan', etc.)
+
+FINDING OPTIMAL K:
+k_range = range(1, 21)
+scores = []
+for k in k_range:
+    model = KNeighborsClassifier(n_neighbors=k)
+    scores.append(cross_val_score(model, X, y, cv=5).mean())
+    - Cross-validation to find best k
+
+
+==========================================
+9. NAIVE BAYES
+==========================================
+
+GAUSSIAN NAIVE BAYES:
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Assumes features are normally distributed
+    - Fast training and prediction
+    - Good baseline for text classification
+
+MULTINOMIAL NAIVE BAYES:
+from sklearn.naive_bayes import MultinomialNB
+model = MultinomialNB()
+    - For discrete features (e.g., word counts)
+
+BERNOULLI NAIVE BAYES:
+from sklearn.naive_bayes import BernoulliNB
+model = BernoulliNB()
+    - For binary features
+
+
+==========================================
+10. MODEL EVALUATION
+==========================================
+
+ACCURACY:
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(y_test, y_pred)
+    - Proportion of correct predictions
+
+CONFUSION MATRIX:
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+    - True Positives, False Positives, True Negatives, False Negatives
+
+CLASSIFICATION REPORT:
+from sklearn.metrics import classification_report
+report = classification_report(y_test, y_pred)
+    - Precision, Recall, F1-score for each class
+
+PRECISION AND RECALL:
+from sklearn.metrics import precision_score, recall_score, f1_score
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+    - Precision: TP / (TP + FP)
+    - Recall: TP / (TP + FN)
+    - F1: harmonic mean of precision and recall
+
+ROC CURVE:
+from sklearn.metrics import roc_curve, auc
+fpr, tpr, _ = roc_curve(y_test, y_proba[:, 1])
+roc_auc = auc(fpr, tpr)
+    - Plot True Positive Rate vs False Positive Rate
+
+PRECISION-RECALL CURVE:
+from sklearn.metrics import precision_recall_curve
+precision, recall, _ = precision_recall_curve(y_test, y_proba[:, 1])
+    - Better for imbalanced datasets
+
+
+==========================================
+11. CROSS-VALIDATION
+==========================================
+
+K-FOLD CROSS-VALIDATION:
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(model, X, y, cv=5)
+print(f"CV Accuracy: {scores.mean():.3f} (+/- {scores.std() * 2:.3f})")
+    - 5-fold cross-validation
+    - More robust evaluation
+
+STRATIFIED K-FOLD:
+from sklearn.model_selection import StratifiedKFold
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, cv=cv)
+    - Maintains class distribution in each fold
+
+CUSTOM CROSS-VALIDATION:
+from sklearn.model_selection import cross_validate
+results = cross_validate(model, X, y, cv=5, scoring=['accuracy', 'precision', 'recall'])
+    - Multiple scoring metrics
+
+
+==========================================
+12. HYPERPARAMETER TUNING
+==========================================
+
+GRID SEARCH:
+from sklearn.model_selection import GridSearchCV
+param_grid = {'C': [0.1, 1, 10], 'penalty': ['l1', 'l2']}
+grid_search = GridSearchCV(LogisticRegression(), param_grid, cv=5)
+grid_search.fit(X_train, y_train)
+best_model = grid_search.best_estimator_
+    - Exhaustive search over parameter grid
+
+RANDOM SEARCH:
+from sklearn.model_selection import RandomizedSearchCV
+param_distributions = {'C': [0.1, 1, 10], 'penalty': ['l1', 'l2']}
+random_search = RandomizedSearchCV(LogisticRegression(), param_distributions, n_iter=10, cv=5)
+    - Random sampling of parameter space
+    - Faster than grid search
+
+BEST PARAMETERS:
+print(f"Best parameters: {grid_search.best_params_}")
+print(f"Best score: {grid_search.best_score_:.3f}")
+    - Access best parameters and score 

@@ -1,0 +1,461 @@
+NUMPY CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. Installation & Import
+2. Creating Arrays
+3. Array Properties
+4. Indexing & Slicing
+5. Array Operations
+6. Mathematical Functions
+7. Statistical Functions
+8. Array Manipulation
+9. Broadcasting
+10. Linear Algebra
+
+==========================================
+1. INSTALLATION & IMPORT
+==========================================
+
+$ pip install numpy
+    - Installs NumPy library via pip package manager
+
+import numpy as np
+    - Standard convention for importing NumPy
+    - 'np' is the universally accepted alias for NumPy
+
+
+==========================================
+2. CREATING ARRAYS
+==========================================
+
+BASIC ARRAY CREATION:
+np.array([1, 2, 3, 4, 5])
+    - Creates array from list
+    - Automatically infers data type
+
+np.zeros((3, 4))
+    - Creates array filled with zeros
+    - Shape: (rows, columns)
+
+np.ones((2, 3))
+    - Creates array filled with ones
+    - Useful for initialization
+
+np.arange(0, 10, 2)
+    - Creates array with range: start, stop, step
+    - Similar to range() but returns array
+    - Example: [0, 2, 4, 6, 8]
+
+np.linspace(0, 1, 5)
+    - Creates array with evenly spaced values
+    - 5 values between 0 and 1: [0, 0.25, 0.5, 0.75, 1]
+
+np.random.rand(3, 4)
+    - Creates array with random values (0 to 1)
+    - Shape: (3, 4)
+
+np.random.randn(2, 3)
+    - Creates array with random normal distribution
+    - Mean=0, std=1
+
+np.eye(3)
+    - Creates identity matrix (3x3)
+    - Diagonal is 1, rest is 0
+
+np.diag([1, 2, 3])
+    - Creates diagonal matrix
+    - Diagonal elements from list
+
+
+==========================================
+3. ARRAY PROPERTIES
+==========================================
+
+ARRAY ATTRIBUTES:
+arr.shape
+    - Returns tuple of array dimensions
+    - Example: (3, 4) for 3 rows, 4 columns
+
+arr.size
+    - Returns total number of elements
+    - Example: 12 for 3x4 array
+
+arr.ndim
+    - Returns number of dimensions
+    - Example: 2 for 2D array
+
+arr.dtype
+    - Returns data type of array
+    - Example: int64, float64, bool
+
+arr.itemsize
+    - Returns size of each element in bytes
+
+DATA TYPES:
+np.int32, np.int64
+    - 32-bit and 64-bit integers
+
+np.float32, np.float64
+    - 32-bit and 64-bit floating point
+
+np.bool_
+    - Boolean type
+
+np.string_, np.unicode_
+    - String types
+
+TYPE CONVERSION:
+arr.astype(np.float64)
+    - Converts array to specified data type
+    - Example: arr.astype(int) converts to integers
+
+
+==========================================
+4. INDEXING & SLICING
+==========================================
+
+BASIC INDEXING:
+arr[0]
+    - First element (1D array)
+
+arr[0, 1]
+    - Element at row 0, column 1 (2D array)
+
+arr[0][1]
+    - Alternative syntax for 2D indexing
+
+SLICING:
+arr[start:stop:step]
+    - Basic slicing syntax
+    - start: inclusive, stop: exclusive
+
+arr[1:4]
+    - Elements from index 1 to 3 (exclusive)
+
+arr[::2]
+    - Every second element
+
+arr[::-1]
+    - Reverse array
+
+2D SLICING:
+arr[1:3, 0:2]
+    - Rows 1-2, columns 0-1
+
+arr[:, 1]
+    - All rows, column 1
+
+arr[1, :]
+    - Row 1, all columns
+
+BOOLEAN INDEXING:
+arr[arr > 5]
+    - Elements greater than 5
+
+mask = arr > 5
+arr[mask]
+    - Same as above, using boolean mask
+
+FANCY INDEXING:
+arr[[0, 2, 4]]
+    - Selects elements at indices 0, 2, 4
+
+arr[[0, 1], [2, 3]]
+    - Selects elements at (0,2) and (1,3)
+
+
+==========================================
+5. ARRAY OPERATIONS
+==========================================
+
+ARITHMETIC OPERATIONS:
+arr + 5
+    - Adds 5 to all elements
+
+arr * 2
+    - Multiplies all elements by 2
+
+arr1 + arr2
+    - Element-wise addition
+
+arr1 * arr2
+    - Element-wise multiplication
+
+COMPARISON OPERATIONS:
+arr > 5
+    - Returns boolean array
+
+arr == 0
+    - Returns boolean array
+
+LOGICAL OPERATIONS:
+np.logical_and(arr1, arr2)
+    - Element-wise logical AND
+
+np.logical_or(arr1, arr2)
+    - Element-wise logical OR
+
+np.logical_not(arr)
+    - Element-wise logical NOT
+
+AGGREGATION OPERATIONS:
+arr.sum()
+    - Sum of all elements
+
+arr.mean()
+    - Mean of all elements
+
+arr.std()
+    - Standard deviation
+
+arr.min(), arr.max()
+    - Minimum and maximum values
+
+AXIS OPERATIONS:
+arr.sum(axis=0)
+    - Sum along rows (column-wise)
+
+arr.sum(axis=1)
+    - Sum along columns (row-wise)
+
+arr.mean(axis=0)
+    - Mean along rows
+
+
+==========================================
+6. MATHEMATICAL FUNCTIONS
+==========================================
+
+BASIC MATH:
+np.sqrt(arr)
+    - Square root of each element
+
+np.square(arr)
+    - Square of each element
+
+np.exp(arr)
+    - Exponential function
+
+np.log(arr)
+    - Natural logarithm
+
+np.log10(arr)
+    - Base-10 logarithm
+
+TRIGONOMETRIC:
+np.sin(arr), np.cos(arr), np.tan(arr)
+    - Trigonometric functions (radians)
+
+np.arcsin(arr), np.arccos(arr), np.arctan(arr)
+    - Inverse trigonometric functions
+
+np.deg2rad(arr), np.rad2deg(arr)
+    - Convert between degrees and radians
+
+ROUNDING:
+np.round(arr)
+    - Round to nearest integer
+
+np.floor(arr)
+    - Round down to nearest integer
+
+np.ceil(arr)
+    - Round up to nearest integer
+
+np.trunc(arr)
+    - Truncate to integer
+
+
+==========================================
+7. STATISTICAL FUNCTIONS
+==========================================
+
+DESCRIPTIVE STATISTICS:
+np.mean(arr)
+    - Arithmetic mean
+
+np.median(arr)
+    - Median value
+
+np.std(arr)
+    - Standard deviation
+
+np.var(arr)
+    - Variance
+
+np.percentile(arr, 75)
+    - 75th percentile
+
+np.quantile(arr, 0.75)
+    - 75th quantile (same as percentile)
+
+CORRELATION:
+np.corrcoef(arr1, arr2)
+    - Correlation coefficient matrix
+
+np.cov(arr1, arr2)
+    - Covariance matrix
+
+HISTOGRAM:
+np.histogram(arr, bins=10)
+    - Creates histogram data
+    - Returns counts and bin edges
+
+RANDOM SAMPLING:
+np.random.choice(arr, size=5)
+    - Random sample from array
+
+np.random.shuffle(arr)
+    - Shuffle array in-place
+
+
+==========================================
+8. ARRAY MANIPULATION
+==========================================
+
+RESHAPING:
+arr.reshape(2, 3)
+    - Reshape to 2x3 array
+
+arr.reshape(-1, 1)
+    - Reshape to column vector
+
+arr.flatten()
+    - Flatten to 1D array
+
+arr.ravel()
+    - Flatten to 1D array (view if possible)
+
+TRANSPOSE:
+arr.T
+    - Transpose array
+
+arr.transpose()
+    - Transpose array (explicit)
+
+CONCATENATION:
+np.concatenate([arr1, arr2])
+    - Concatenate along axis 0
+
+np.concatenate([arr1, arr2], axis=1)
+    - Concatenate along axis 1
+
+np.vstack([arr1, arr2])
+    - Vertical stack (rows)
+
+np.hstack([arr1, arr2])
+    - Horizontal stack (columns)
+
+SPLITTING:
+np.split(arr, 3)
+    - Split into 3 equal parts
+
+np.vsplit(arr, 2)
+    - Split vertically
+
+np.hsplit(arr, 2)
+    - Split horizontally
+
+SORTING:
+np.sort(arr)
+    - Sort array (returns new array)
+
+arr.sort()
+    - Sort array in-place
+
+np.argsort(arr)
+    - Returns indices that would sort array
+
+np.lexsort([arr1, arr2])
+    - Sort by multiple arrays
+
+
+==========================================
+9. BROADCASTING
+==========================================
+
+Broadcasting allows NumPy to work with arrays of different shapes.
+
+RULES:
+1. Arrays are aligned by their trailing dimensions
+2. Missing dimensions are added as size 1
+3. Arrays are expanded to match the largest shape
+
+EXAMPLES:
+arr + 5
+    - Scalar broadcasts to all elements
+
+arr1(3,4) + arr2(4,)
+    - arr2 broadcasts to (1,4) then to (3,4)
+
+arr1(3,1) + arr2(1,4)
+    - Both arrays broadcast to (3,4)
+
+COMMON PATTERNS:
+arr[:, np.newaxis]
+    - Add new axis (column vector)
+
+arr[np.newaxis, :]
+    - Add new axis (row vector)
+
+np.expand_dims(arr, axis=0)
+    - Add dimension at specified axis
+
+
+==========================================
+10. LINEAR ALGEBRA
+==========================================
+
+MATRIX OPERATIONS:
+np.dot(arr1, arr2)
+    - Matrix multiplication
+
+arr1 @ arr2
+    - Matrix multiplication (Python 3.5+)
+
+np.matmul(arr1, arr2)
+    - Matrix multiplication (explicit)
+
+EIGENVALUES & EIGENVECTORS:
+np.linalg.eig(arr)
+    - Eigenvalues and eigenvectors
+
+np.linalg.eigvals(arr)
+    - Eigenvalues only
+
+MATRIX DECOMPOSITION:
+np.linalg.svd(arr)
+    - Singular value decomposition
+
+np.linalg.qr(arr)
+    - QR decomposition
+
+np.linalg.cholesky(arr)
+    - Cholesky decomposition
+
+SOLVING EQUATIONS:
+np.linalg.solve(A, b)
+    - Solve Ax = b
+
+np.linalg.inv(arr)
+    - Matrix inverse
+
+np.linalg.det(arr)
+    - Matrix determinant
+
+np.linalg.trace(arr)
+    - Matrix trace (sum of diagonal)
+
+NORM & DISTANCE:
+np.linalg.norm(arr)
+    - Matrix/vector norm
+
+np.linalg.norm(arr, ord=2)
+    - L2 norm (default)
+
+np.linalg.norm(arr, ord=1)
+    - L1 norm
+
+np.linalg.norm(arr, ord=np.inf)
+    - Infinity norm 

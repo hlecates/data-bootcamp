@@ -58,7 +58,7 @@ $ git reset [FILENAME]
     - Unstages a file from the commit, while maintaining the changes made in working directory. 
 
 $ git commit -m "[COMMIT MESSAGE]"
-    - Commits the statged snapshot as a new commit. The commit message should be a descriptive description of
+    - Commits the staged snapshot as a new commit. The commit message should be a descriptive description of
     the commit. A common message style is the conventional commit: "type(scope): short description"
 
 

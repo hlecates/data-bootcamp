@@ -1,0 +1,427 @@
+REGRESSION CHEATSHEET
+
+TABLE OF CONTENTS
+=================
+1. Installation & Import
+2. Data Preparation
+3. Train-Test Split
+4. Linear Regression
+5. Ridge Regression
+6. Lasso Regression
+7. Polynomial Regression
+8. Decision Trees
+9. Random Forest
+10. Support Vector Regression
+11. Model Evaluation
+12. Cross-Validation
+13. Hyperparameter Tuning
+
+==========================================
+1. INSTALLATION & IMPORT
+==========================================
+
+$ pip install scikit-learn pandas numpy matplotlib seaborn
+    - Installs essential libraries for regression
+
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+    - Standard imports for regression algorithms and evaluation
+
+
+==========================================
+2. DATA PREPARATION
+==========================================
+
+LOADING DATA:
+import pandas as pd
+df = pd.read_csv('data.csv')
+    - Load dataset from CSV file
+
+EXPLORING DATA:
+df.head()
+    - View first 5 rows
+
+df.info()
+    - Data types and missing values
+
+df.describe()
+    - Statistical summary
+
+df.corr()
+    - Correlation matrix
+
+HANDLING MISSING VALUES:
+df.dropna()
+    - Remove rows with missing values
+
+df.fillna(value)
+    - Fill missing values with specific value
+
+df.fillna(df.mean())
+    - Fill missing values with mean
+
+FEATURE ENGINEERING:
+df['new_feature'] = df['col1'] + df['col2']
+    - Create new features
+
+df['category_encoded'] = pd.get_dummies(df['category'])
+    - One-hot encoding for categorical variables
+
+FEATURE SCALING:
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+    - Standardize features (mean=0, std=1)
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+    - Normalize features to [0,1] range
+
+
+==========================================
+3. TRAIN-TEST SPLIT
+==========================================
+
+BASIC SPLIT:
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    - Split data into training (80%) and test (20%) sets
+    - random_state ensures reproducible results
+
+STRATIFIED SPLIT (FOR REGRESSION):
+from sklearn.model_selection import train_test_split
+bins = np.linspace(y.min(), y.max(), 10)
+y_binned = pd.cut(y, bins=bins, labels=False)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y_binned, random_state=42)
+    - Stratify based on binned target values
+    - Ensures similar target distribution in train/test sets
+
+
+==========================================
+4. LINEAR REGRESSION
+==========================================
+
+BASIC LINEAR REGRESSION:
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Simple linear regression
+    - Assumes linear relationship between features and target
+    - No regularization
+
+COEFFICIENTS AND INTERCEPT:
+model.coef_
+    - Feature coefficients (slopes)
+    - Positive: increases target value
+    - Negative: decreases target value
+
+model.intercept_
+    - Y-intercept (bias term)
+
+FEATURE IMPORTANCE:
+importance = np.abs(model.coef_)
+    - Absolute values of coefficients
+    - Higher values indicate more important features
+
+MULTIPLE LINEAR REGRESSION:
+model.fit(X_train, y_train)
+    - Automatically handles multiple features
+    - Each feature gets its own coefficient
+
+
+==========================================
+5. RIDGE REGRESSION
+==========================================
+
+BASIC RIDGE REGRESSION:
+from sklearn.linear_model import Ridge
+model = Ridge(alpha=1.0)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Linear regression with L2 regularization
+    - Prevents overfitting by penalizing large coefficients
+    - alpha: regularization strength (higher = stronger regularization)
+
+HYPERPARAMETERS:
+model = Ridge(alpha=1.0, solver='auto', random_state=42)
+    - alpha: regularization parameter
+    - solver: 'auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga'
+
+FINDING OPTIMAL ALPHA:
+alphas = [0.001, 0.01, 0.1, 1, 10, 100]
+scores = []
+for alpha in alphas:
+    model = Ridge(alpha=alpha)
+    scores.append(cross_val_score(model, X, y, cv=5).mean())
+    - Cross-validation to find best alpha
+
+
+==========================================
+6. LASSO REGRESSION
+==========================================
+
+BASIC LASSO REGRESSION:
+from sklearn.linear_model import Lasso
+model = Lasso(alpha=1.0)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Linear regression with L1 regularization
+    - Performs feature selection by setting some coefficients to zero
+    - Good for high-dimensional data
+
+HYPERPARAMETERS:
+model = Lasso(alpha=1.0, max_iter=1000, random_state=42)
+    - alpha: regularization parameter
+    - max_iter: maximum iterations for convergence
+
+FEATURE SELECTION:
+non_zero_coef = np.sum(model.coef_ != 0)
+print(f"Number of non-zero coefficients: {non_zero_coef}")
+    - Count features with non-zero coefficients
+
+ELASTIC NET:
+from sklearn.linear_model import ElasticNet
+model = ElasticNet(alpha=1.0, l1_ratio=0.5)
+    - Combines L1 and L2 regularization
+    - l1_ratio: mixing parameter (0=L2 only, 1=L1 only)
+
+
+==========================================
+7. POLYNOMIAL REGRESSION
+==========================================
+
+BASIC POLYNOMIAL REGRESSION:
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+poly = PolynomialFeatures(degree=2)
+X_poly = poly.fit_transform(X_train)
+model = LinearRegression()
+model.fit(X_poly, y_train)
+    - Creates polynomial features
+    - degree=2: creates x², x³, x₁x₂, etc.
+
+PREDICTION WITH POLYNOMIAL FEATURES:
+X_test_poly = poly.transform(X_test)
+y_pred = model.predict(X_test_poly)
+    - Transform test data with same polynomial features
+
+FEATURE NAMES:
+poly.get_feature_names_out()
+    - Get names of polynomial features
+
+OVERFITTING CONTROL:
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+pipeline = Pipeline([
+    ('poly', PolynomialFeatures(degree=2)),
+    ('scaler', StandardScaler()),
+    ('regressor', Ridge(alpha=1.0))
+])
+    - Combine polynomial features with regularization
+
+
+==========================================
+8. DECISION TREES
+==========================================
+
+BASIC DECISION TREE:
+from sklearn.tree import DecisionTreeRegressor
+model = DecisionTreeRegressor(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Non-linear regression
+    - Easy to interpret
+    - Can overfit easily
+
+HYPERPARAMETERS:
+model = DecisionTreeRegressor(max_depth=5, min_samples_split=2, min_samples_leaf=1, random_state=42)
+    - max_depth: maximum tree depth
+    - min_samples_split: minimum samples to split node
+    - min_samples_leaf: minimum samples in leaf node
+
+FEATURE IMPORTANCE:
+model.feature_importances_
+    - Importance of each feature
+    - Sum to 1.0
+
+VISUALIZATION:
+from sklearn.tree import plot_tree
+plot_tree(model, feature_names=feature_names)
+    - Visualize decision tree structure
+
+
+==========================================
+9. RANDOM FOREST
+==========================================
+
+BASIC RANDOM FOREST:
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Ensemble of decision trees
+    - Reduces overfitting
+    - Provides feature importance
+
+HYPERPARAMETERS:
+model = RandomForestRegressor(n_estimators=100, max_depth=10, min_samples_split=2, random_state=42)
+    - n_estimators: number of trees
+    - max_depth: maximum depth of each tree
+    - min_samples_split: minimum samples to split
+
+FEATURE IMPORTANCE:
+importances = model.feature_importances_
+    - Average feature importance across all trees
+
+INDICES = np.argsort(importances)[::-1]
+for f in range(X.shape[1]):
+    print("%d. %s (%f)" % (f + 1, feature_names[INDICES[f]], importances[INDICES[f]]))
+    - Print feature importance ranking
+
+PREDICTION INTERVALS:
+predictions = []
+for _ in range(100):
+    sample_idx = np.random.choice(len(X_train), len(X_train))
+    sample_X, sample_y = X_train.iloc[sample_idx], y_train.iloc[sample_idx]
+    model.fit(sample_X, sample_y)
+    predictions.append(model.predict(X_test))
+    - Bootstrap predictions for uncertainty estimation
+
+
+==========================================
+10. SUPPORT VECTOR REGRESSION
+==========================================
+
+BASIC SVR:
+from sklearn.svm import SVR
+model = SVR(kernel='rbf', C=1.0, epsilon=0.1)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+    - Support Vector Regression
+    - Good for non-linear relationships
+    - Can be slow for large datasets
+
+HYPERPARAMETERS:
+model = SVR(C=1.0, epsilon=0.1, kernel='rbf', gamma='scale', random_state=42)
+    - C: regularization parameter
+    - epsilon: margin of tolerance
+    - kernel: 'linear', 'rbf', 'poly', 'sigmoid'
+    - gamma: kernel coefficient
+
+KERNEL COMPARISON:
+kernels = ['linear', 'rbf', 'poly']
+for kernel in kernels:
+    model = SVR(kernel=kernel)
+    score = cross_val_score(model, X, y, cv=5).mean()
+    print(f"{kernel}: {score:.3f}")
+    - Compare different kernels
+
+
+==========================================
+11. MODEL EVALUATION
+==========================================
+
+MEAN SQUARED ERROR:
+from sklearn.metrics import mean_squared_error
+mse = mean_squared_error(y_test, y_pred)
+    - Average squared difference between predictions and actual values
+    - Penalizes large errors more heavily
+
+ROOT MEAN SQUARED ERROR:
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+    - Square root of MSE
+    - Same units as target variable
+
+MEAN ABSOLUTE ERROR:
+from sklearn.metrics import mean_absolute_error
+mae = mean_absolute_error(y_test, y_pred)
+    - Average absolute difference
+    - Less sensitive to outliers than MSE
+
+R-SQUARED SCORE:
+from sklearn.metrics import r2_score
+r2 = r2_score(y_test, y_pred)
+    - Proportion of variance explained by model
+    - Range: 0 to 1 (higher is better)
+
+ADJUSTED R-SQUARED:
+n = len(y_test)
+p = X_test.shape[1]
+adj_r2 = 1 - (1 - r2) * (n - 1) / (n - p - 1)
+    - Penalizes for number of features
+    - Better for comparing models with different numbers of features
+
+RESIDUAL ANALYSIS:
+residuals = y_test - y_pred
+plt.scatter(y_pred, residuals)
+plt.axhline(y=0, color='r', linestyle='--')
+plt.xlabel('Predicted Values')
+plt.ylabel('Residuals')
+    - Check for patterns in residuals
+    - Should be randomly distributed around zero
+
+
+==========================================
+12. CROSS-VALIDATION
+==========================================
+
+K-FOLD CROSS-VALIDATION:
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(model, X, y, cv=5, scoring='neg_mean_squared_error')
+rmse_scores = np.sqrt(-scores)
+print(f"CV RMSE: {rmse_scores.mean():.3f} (+/- {rmse_scores.std() * 2:.3f})")
+    - 5-fold cross-validation
+    - More robust evaluation
+
+MULTIPLE SCORING METRICS:
+from sklearn.model_selection import cross_validate
+results = cross_validate(model, X, y, cv=5, 
+                       scoring=['neg_mean_squared_error', 'r2', 'neg_mean_absolute_error'])
+    - Multiple scoring metrics at once
+
+TIME SERIES CROSS-VALIDATION:
+from sklearn.model_selection import TimeSeriesSplit
+tscv = TimeSeriesSplit(n_splits=5)
+scores = cross_val_score(model, X, y, cv=tscv)
+    - For time series data
+
+
+==========================================
+13. HYPERPARAMETER TUNING
+==========================================
+
+GRID SEARCH:
+from sklearn.model_selection import GridSearchCV
+param_grid = {'alpha': [0.001, 0.01, 0.1, 1, 10]}
+grid_search = GridSearchCV(Ridge(), param_grid, cv=5, scoring='neg_mean_squared_error')
+grid_search.fit(X_train, y_train)
+best_model = grid_search.best_estimator_
+    - Exhaustive search over parameter grid
+
+RANDOM SEARCH:
+from sklearn.model_selection import RandomizedSearchCV
+param_distributions = {'alpha': [0.001, 0.01, 0.1, 1, 10]}
+random_search = RandomizedSearchCV(Ridge(), param_distributions, n_iter=10, cv=5)
+    - Random sampling of parameter space
+    - Faster than grid search
+
+BEST PARAMETERS:
+print(f"Best parameters: {grid_search.best_params_}")
+print(f"Best score: {grid_search.best_score_:.3f}")
+    - Access best parameters and score
+
+BAYESIAN OPTIMIZATION:
+from skopt import gp_minimize
+def objective(params):
+    model = Ridge(alpha=params[0])
+    return -cross_val_score(model, X, y, cv=5).mean()
+    - More efficient than grid/random search 

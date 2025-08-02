@@ -11,8 +11,7 @@ TABLE OF CONTENTS
 7. File Handling
 8. Error Handling
 9. List Comprehensions
-1. Lambda Functions
-11. Modules & Packages
+10. Modules & Packages
 
 ==========================================
 1. VARIABLES & DATA TYPES
@@ -325,6 +324,7 @@ class Person:
 # Creating objects (instances)
 person1 = Person("Alice", 25)
 person2 = Person("Bob", 30)
+
 
 # Using methods
 print(person1.greet())

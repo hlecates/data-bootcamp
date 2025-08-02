@@ -26,8 +26,11 @@ Machine learning is a subset of data science focused on algorithms that learn pa
 * `numpy/`
   Offers a cheatsheet on array operations, broadcasting, and vectorized computations, alongside example notebooks.
 
-* `pandas-plotting/`
-  Provides a cheatsheet for data manipulation with Pandas and basic plotting techniques, plus walkthrough notebooks.
+* `pandas/`
+  Provides a cheatsheet for data manipulation with Pandas, including data structures, I/O operations, cleaning, and analysis techniques.
+
+* `plotting/`
+  Offers a cheatsheet for data visualization using matplotlib and seaborn, covering various plot types and customization options.
 
 * `modeling/`
   Features a cheatsheet on regression and classification concepts and commands, with Jupyter notebooks illustrating model building and evaluation.
